@@ -1,14 +1,55 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.ArrayList;
+
+import static stepdefinition.SharedSD.getDriver;
 
 public class Darksky extends Base {
 
     By currentTemp = By.xpath("//span[@class='summary swap']");
     By timeLineTemp = By.xpath("//span[@class='first']//span");
     By timeListRaw = By.xpath("//span[@class='hour']/span");
+    By expander = By.xpath("//a[@data-day='0']//span[@class='toggle']");
+    By minTempBar = By.xpath("//a[@class='day revealed']//span[@class='minTemp']");
+    By maxTempBar = By.xpath("//a[@class='day revealed']//span[@class='maxTemp']");
+    By minTempTimeline = By.xpath("//div[@class='dayDetails revealed']//span[@class='highTemp swip']//span[@class='temp']");
+    By maxTempTimeline = By.xpath("//div[@class='dayDetails revealed']//span[@class='lowTemp swap']//span[@class='temp']");
+    By lnkDarkSkyAPI = By.xpath("//a[normalize-space()='Dark Sky API']");
+
+    public void clickDarkSkyAPI()
+    {
+        clickOn(lnkDarkSkyAPI);
+    }
+
+    public ArrayList<String> getBarTempList()
+    {
+        ArrayList<String> tempList = new ArrayList<>();
+
+        tempList.add(getTextFromElement(minTempBar).split("˚")[0]); // 52˚
+        tempList.add(getTextFromElement(maxTempBar).split("˚")[0]); // 52˚
+        return tempList;
+    }
+
+    public ArrayList<String> getTimelineTempList()
+    {
+        ArrayList<String> tempList = new ArrayList<>();
+
+        tempList.add(getTextFromElement(minTempTimeline).split("˚")[0]); // 52˚
+        tempList.add(getTextFromElement(maxTempTimeline).split("˚")[0]); // 52˚
+        return tempList;
+    }
+
+    public void clickExpander()
+    {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,800)");
+        js.executeScript("arguments[0].click()",webAction(expander));
+        //clickOn(expander);
+    }
+
 
     public ArrayList<Integer> getTimeListInt()
     {

@@ -2,10 +2,12 @@ package stepdefinition;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.junit.Assert;
 import pages.Darksky;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static stepdefinition.SharedSD.getDriver;
 
@@ -61,5 +63,30 @@ public class DarkskySD {
         System.out.println(timeDiffList);
 
         // [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+
+        int size = timeDiffList.size();
+
+        int occurance = Collections.frequency(timeDiffList,2);
+
+        boolean result = (size == occurance);
+
+        Assert.assertTrue("all the differences are not 2",result);
+
     }
+
+    @Then("I verify today's lowest and highest temp is displayed correctly")
+    public void iVerifyTodaySLowestAndHighestTempIsDisplayedCorrectly() {
+        darksky.clickExpander();
+
+        ArrayList<String> expected = darksky.getBarTempList();
+        ArrayList<String> actual = darksky.getTimelineTempList();
+
+        System.out.println(expected);
+        System.out.println(actual);
+
+        Assert.assertEquals(expected,actual);
+
+    }
+
+
 }
